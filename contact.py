@@ -3,10 +3,22 @@
 
 # Function showContact
 def showContact(nom, prenom, email):
+    print "Nom et prenom du contact : ", prenom, nom, "Email :", email
+
+# Function showContactLDIF
+def showContactLDIF(nom, prenom, email):
     "Show contact's informations"
-    print "Nom du contact : ", nom
-    print "Prénom du contact : ", prenom
-    print "Email de la personne : ", email
+    print "dn: cn=%s %s,mail=%s" % (prenom, nom, email)
+    print "objectclass: top"
+    print "objectclass: person"
+    print "objectclass: organizationalPerson"
+    print "objectclass: inetOrgPerson"
+    print "objectclass: mozillaAbPersonAlpha"
+    print "givenName:", prenom
+    print "sn:", nom
+    print "cn:", prenom, nom
+    print "mail:", email
+    print "modifytimestamp: 1323186656"
 
 # Function getData
 def getData():
@@ -19,5 +31,5 @@ def getData():
 # Function main()
 
 nom, prenom, email = getData()
-showContact(nom, prenom, email)
+showContactLDIF(nom, prenom, email)
 
