@@ -1,9 +1,11 @@
 # -*- coding:Utf-8 -*-
 # Project Contacts.ldif
 
+
 # Function showContact
 def showContact(nom, prenom, email):
     print "Nom et prenom du contact : ", prenom, nom, "Email :", email
+
 
 # Function showContactLDIF
 def showContactLDIF(nom, prenom, email):
@@ -20,6 +22,7 @@ def showContactLDIF(nom, prenom, email):
     print "mail:", email
     print "modifytimestamp: 1323186656"
 
+
 # Function getData
 def getData():
     "Return the informations entered"
@@ -28,8 +31,8 @@ def getData():
     email = raw_input("Email : ")
     return [nom, prenom, email]
 
+
 # Function main()
 
 nom, prenom, email = getData()
 showContactLDIF(nom, prenom, email)
-
