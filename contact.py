@@ -49,17 +49,17 @@ def writeInFile():
         if last_name == '':
             break
         else:
-            of.write("dn: cn=%s %s,mail=%s" % (first_name, last_name, email) + '\n')
-            of.write("objectclass: top" + '\n')
-            of.write("objectclass: person" + '\n')
-            of.write("objectclass: organizationalPerson" + '\n')
-            of.write("objectclass: inetOrgPerson" + '\n')
-            of.write("objectclass: mozillaAbPersonAlpha" + '\n')
-            of.write("givenName:" + first_name + '\n')
-            of.write("sn:" + last_name + '\n')
-            of.write("cn:" + first_name + " " + last_name + '\n')
-            of.write("mail:" + email + '\n')
-            of.write("modifytimestamp: " + timestamp + '\n\n')
+            of.write("dn: cn=%s %s,mail=%s\n" % (first_name, last_name, email))
+            of.write("objectclass: top\n")
+            of.write("objectclass: person\n")
+            of.write("objectclass: organizationalPerson\n")
+            of.write("objectclass: inetOrgPerson\n")
+            of.write("objectclass: mozillaAbPersonAlpha\n")
+            of.write("givenName:%s\n" % first_name)
+            of.write("sn:%s\n" % last_name)
+            of.write("cn:%s %s\n" % (first_name, last_name))
+            of.write("mail:%s\n" % email)
+            of.write("modifytimestamp: %s\n\n" % timestamp)
     of.close()
 
 
