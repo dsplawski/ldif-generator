@@ -75,9 +75,9 @@ def readInFile():
 
 
 filename = raw_input('Enter filename to process: ')
-option = raw_input('Type "e" to add contacts or "c" to show contact list: ')
+option = raw_input('Type "a" to add contacts or "s" to show contact list: ')
 
-if option == 'e':
+if option == 'a':
     writeInFile()
 else:
     readInFile()
