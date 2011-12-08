@@ -1,12 +1,7 @@
 # -*- coding:Utf-8 -*-
-# Project Contacts.ldif
-
-
-# Imports
 import time
 
 
-# Function getTimestamp
 def getTimestamp():
     "Return timestamp"
     debut = time.time()
@@ -16,13 +11,11 @@ def getTimestamp():
     return str(tstamp)
 
 
-# Function showContact
 def showContact(nom, prenom, email):
     "Show contact's informations"
     print "Nom et prenom du contact : ", prenom, nom, "Email :", email
 
 
-# Function showContactLDIF
 def showContactLDIF(nom, prenom, email, timestamp):
     "Show contact's informations (format LDIF)"
     print "dn: cn=%s %s,mail=%s" % (prenom, nom, email)
@@ -38,7 +31,6 @@ def showContactLDIF(nom, prenom, email, timestamp):
     print "modifytimestamp:", timestamp
 
 
-# Function getData
 def getData():
     "Return the informations entered"
     nom = raw_input("Nom : ")
@@ -47,7 +39,6 @@ def getData():
     return [nom, prenom, email]
 
 
-# Function writeInFile
 def writeInFile():
     "Write in a file"
     of = open(nomF, 'a')
@@ -71,7 +62,6 @@ def writeInFile():
     of.close()
 
 
-# Function readInFile
 def readInFile():
     "Read in a file"
     of = open(nomF, 'r')
@@ -82,8 +72,6 @@ def readInFile():
         print ligne
     of.close()
 
-
-# Function main()
 
 nomF = raw_input('Nom du fichier à traiter : ')
 choix = raw_input('Entrez "e" pour écrire, "c" pour consulter les données : ')
