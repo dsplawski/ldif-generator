@@ -14,7 +14,7 @@ def getTimestamp():
 
 def showContact(nom, prenom, email):
     "Show contact's informations"
-    print "Nom et prenom du contact : ", prenom, nom, "Email :", email
+    print "First name and last name : ", prenom, nom, "E-mail :", email
 
 
 def showContactLDIF(nom, prenom, email, timestamp):
@@ -74,8 +74,8 @@ def readInFile():
     of.close()
 
 
-nomF = raw_input('Nom du fichier à traiter : ')
-choix = raw_input('Entrez "e" pour écrire, "c" pour consulter les données : ')
+nomF = raw_input('Enter filename to process: ')
+choix = raw_input('Type "e" to add contacts or "c" to show contact list: ')
 
 if choix == 'e':
     writeInFile()
