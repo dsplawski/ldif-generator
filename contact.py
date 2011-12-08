@@ -34,9 +34,9 @@ def showContactLDIF(nom, prenom, email, timestamp):
 
 def getData():
     "Return the informations entered"
-    nom = raw_input("Nom : ")
-    prenom = raw_input("Prénom : ")
-    email = raw_input("Email : ")
+    nom = raw_input("Last name : ")
+    prenom = raw_input("First name : ")
+    email = raw_input("E-mail : ")
     return [nom, prenom, email]
 
 
