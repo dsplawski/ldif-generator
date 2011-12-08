@@ -1,4 +1,8 @@
 # -*- coding:Utf-8 -*-
+"""A generator of LDIF contact files for Mozilla Thunderbird"""
+__author__ = "David SPLAWSKI <splawski.david@gmail.com>"
+__version__ = "0.2"
+
 import time
 
 
