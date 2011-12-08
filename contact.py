@@ -12,52 +12,52 @@ def getTimestamp():
     return "%d" % timestamp
 
 
-def showContact(nom, prenom, email):
+def showContact(last_name, first_name, email):
     "Show contact's informations"
-    print "First name and last name : ", prenom, nom, "E-mail :", email
+    print "First name and last name:", first_name, last_name, "E-mail:", email
 
 
-def showContactLDIF(nom, prenom, email, timestamp):
+def showContactLDIF(last_name, first_name, email, timestamp):
     "Show contact's informations (format LDIF)"
-    print "dn: cn=%s %s,mail=%s" % (prenom, nom, email)
+    print "dn: cn=%s %s,mail=%s" % (first_name, last_name, email)
     print "objectclass: top"
     print "objectclass: person"
     print "objectclass: organizationalPerson"
     print "objectclass: inetOrgPerson"
     print "objectclass: mozillaAbPersonAlpha"
-    print "givenName:", prenom
-    print "sn:", nom
-    print "cn:", prenom, nom
+    print "givenName:", first_name
+    print "sn:", last_name
+    print "cn:", first_name, last_name
     print "mail:", email
     print "modifytimestamp:", timestamp
 
 
 def getData():
     "Return the informations entered"
-    nom = raw_input("Last name : ")
-    prenom = raw_input("First name : ")
+    last_name = raw_input("Last name : ")
+    first_name = raw_input("First name : ")
     email = raw_input("E-mail : ")
-    return [nom, prenom, email]
+    return [last_name, first_name, email]
 
 
 def writeInFile():
     "Write in a file"
-    of = open(nomF, 'a')
+    of = open(filename, 'a')
     while 1:
-        nom, prenom, email = getData()
+        last_name, first_name, email = getData()
         timestamp = getTimestamp()
-        if nom == '':
+        if last_name == '':
             break
         else:
-            of.write("dn: cn=%s %s,mail=%s" % (prenom, nom, email) + '\n')
+            of.write("dn: cn=%s %s,mail=%s" % (first_name, last_name, email) + '\n')
             of.write("objectclass: top" + '\n')
             of.write("objectclass: person" + '\n')
             of.write("objectclass: organizationalPerson" + '\n')
             of.write("objectclass: inetOrgPerson" + '\n')
             of.write("objectclass: mozillaAbPersonAlpha" + '\n')
-            of.write("givenName:" + prenom + '\n')
-            of.write("sn:" + nom + '\n')
-            of.write("cn:" + prenom + " " + nom + '\n')
+            of.write("givenName:" + first_name + '\n')
+            of.write("sn:" + last_name + '\n')
+            of.write("cn:" + first_name + " " + last_name + '\n')
             of.write("mail:" + email + '\n')
             of.write("modifytimestamp: " + timestamp + '\n\n')
     of.close()
@@ -65,19 +65,19 @@ def writeInFile():
 
 def readInFile():
     "Read in a file"
-    of = open(nomF, 'r')
+    of = open(filename, 'r')
     while 1:
-        ligne = of.readline()
-        if ligne == "":
+        line = of.readline()
+        if line == "":
             break
-        print ligne
+        print line
     of.close()
 
 
-nomF = raw_input('Enter filename to process: ')
-choix = raw_input('Type "e" to add contacts or "c" to show contact list: ')
+filename = raw_input('Enter filename to process: ')
+option = raw_input('Type "e" to add contacts or "c" to show contact list: ')
 
-if choix == 'e':
+if option == 'e':
     writeInFile()
 else:
     readInFile()
