@@ -8,11 +8,8 @@ import time
 
 def getTimestamp():
     "Return timestamp"
-    debut = time.time()
-    temps = time.localtime(debut)
-    timestamp = time.mktime(temps)
-    tstamp = int(timestamp)
-    return str(tstamp)
+    timestamp = int(time.time())
+    return "%d" % timestamp
 
 
 def showContact(nom, prenom, email):
