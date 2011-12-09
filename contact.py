@@ -1,94 +1,83 @@
 # -*- coding:Utf-8 -*-
-# Project Contacts.ldif
+"""A generator of LDIF contact files for Mozilla Thunderbird"""
+__author__ = "David SPLAWSKI <splawski.david@gmail.com>"
+__version__ = "0.2"
 
-
-# Imports
 import time
 
 
-# Function getTimestamp
-def getTimestamp():
+def get_timestamp():
     "Return timestamp"
-    debut = time.time()
-    temps = time.localtime(debut)
-    timestamp = time.mktime(temps)
-    tstamp = int(timestamp)
-    return str(tstamp)
+    timestamp = int(time.time())
+    return "%d" % timestamp
 
 
-# Function showContact
-def showContact(nom, prenom, email):
+def show_contact(last_name, first_name, email):
     "Show contact's informations"
-    print "Nom et prenom du contact : ", prenom, nom, "Email :", email
+    print "First name and last name:", first_name, last_name, "E-mail:", email
 
 
-# Function showContactLDIF
-def showContactLDIF(nom, prenom, email, timestamp):
+def show_contact_ldif(last_name, first_name, email, timestamp):
     "Show contact's informations (format LDIF)"
-    print "dn: cn=%s %s,mail=%s" % (prenom, nom, email)
+    print "dn: cn=%s %s,mail=%s" % (first_name, last_name, email)
     print "objectclass: top"
     print "objectclass: person"
     print "objectclass: organizationalPerson"
     print "objectclass: inetOrgPerson"
     print "objectclass: mozillaAbPersonAlpha"
-    print "givenName:", prenom
-    print "sn:", nom
-    print "cn:", prenom, nom
+    print "givenName:", first_name
+    print "sn:", last_name
+    print "cn:", first_name, last_name
     print "mail:", email
     print "modifytimestamp:", timestamp
 
 
-# Function getData
-def getData():
+def get_data():
     "Return the informations entered"
-    nom = raw_input("Nom : ")
-    prenom = raw_input("Prénom : ")
-    email = raw_input("Email : ")
-    return [nom, prenom, email]
+    last_name = raw_input("Last name : ")
+    first_name = raw_input("First name : ")
+    email = raw_input("E-mail : ")
+    return [last_name, first_name, email]
 
 
-# Function writeInFile
-def writeInFile():
+def write_in_file():
     "Write in a file"
-    of = open(nomF, 'a')
+    of = open(filename, 'a')
     while 1:
-        nom, prenom, email = getData()
-        timestamp = getTimestamp()
-        if nom == '':
+        last_name, first_name, email = get_data()
+        timestamp = get_timestamp()
+        if last_name == '':
             break
         else:
-            of.write("dn: cn=%s %s,mail=%s" % (prenom, nom, email) + '\n')
-            of.write("objectclass: top" + '\n')
-            of.write("objectclass: person" + '\n')
-            of.write("objectclass: organizationalPerson" + '\n')
-            of.write("objectclass: inetOrgPerson" + '\n')
-            of.write("objectclass: mozillaAbPersonAlpha" + '\n')
-            of.write("givenName:" + prenom + '\n')
-            of.write("sn:" + nom + '\n')
-            of.write("cn:" + prenom + " " + nom + '\n')
-            of.write("mail:" + email + '\n')
-            of.write("modifytimestamp: " + timestamp + '\n\n')
+            of.write("dn: cn=%s %s,mail=%s\n" % (first_name, last_name, email))
+            of.write("objectclass: top\n")
+            of.write("objectclass: person\n")
+            of.write("objectclass: organizationalPerson\n")
+            of.write("objectclass: inetOrgPerson\n")
+            of.write("objectclass: mozillaAbPersonAlpha\n")
+            of.write("givenName:%s\n" % first_name)
+            of.write("sn:%s\n" % last_name)
+            of.write("cn:%s %s\n" % (first_name, last_name))
+            of.write("mail:%s\n" % email)
+            of.write("modifytimestamp: %s\n\n" % timestamp)
     of.close()
 
 
-# Function readInFile
-def readInFile():
+def read_in_file():
     "Read in a file"
-    of = open(nomF, 'r')
+    of = open(filename, 'r')
     while 1:
-        ligne = of.readline()
-        if ligne == "":
+        line = of.readline()
+        if line == "":
             break
-        print ligne
+        print line
     of.close()
 
 
-# Function main()
+filename = raw_input('Enter filename to process: ')
+option = raw_input('Type "a" to add contacts or "s" to show contact list: ')
 
-nomF = raw_input('Nom du fichier à traiter : ')
-choix = raw_input('Entrez "e" pour écrire, "c" pour consulter les données : ')
-
-if choix == 'e':
-    writeInFile()
+if option == 'a':
+    write_in_file()
 else:
-    readInFile()
+    read_in_file()
