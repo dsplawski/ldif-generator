@@ -74,10 +74,11 @@ def read_in_file():
     of.close()
 
 
-filename = raw_input('Enter filename to process: ')
-option = raw_input('Type "a" to add contacts or "s" to show contact list: ')
+if __name__ == '__main__':
+    filename = raw_input('Enter filename to process: ')
+    option = raw_input('Type "a" to add contacts or "s" to show contact list: ')
 
-if option == 'a':
-    write_in_file()
-else:
-    read_in_file()
+    if option == 'a':
+        write_in_file()
+    else:
+        read_in_file()
