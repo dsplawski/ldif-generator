@@ -17,49 +17,40 @@ def show_contact(last_name, first_name, email):
     print "First name and last name:", first_name, last_name, "E-mail:", email
 
 
-def show_contact_ldif(last_name, first_name, email, timestamp):
-    "Show contact's informations (format LDIF)"
-    print "dn: cn=%s %s,mail=%s" % (first_name, last_name, email)
-    print "objectclass: top"
-    print "objectclass: person"
-    print "objectclass: organizationalPerson"
-    print "objectclass: inetOrgPerson"
-    print "objectclass: mozillaAbPersonAlpha"
-    print "givenName:", first_name
-    print "sn:", last_name
-    print "cn:", first_name, last_name
-    print "mail:", email
-    print "modifytimestamp:", timestamp
+def get_contact_ldif(first_name, last_name, email):
+    "return contact'si informations (format LDIF)"
+    info = "\ndn: cn=%s %s,mail=%s\n" % (first_name, last_name, email)
+    info += "objectclass: top\n"
+    info += "objectclass: person\n"
+    info += "objectclass: organizationalPerson\n"
+    info += "objectclass: inetOrgPerson\n"
+    info += "objectclass: mozillaAbPersonAlpha\n"
+    info += "givenName: %s\n" % first_name
+    info += "sn: %s\n" % last_name
+    info += "cn: %s %s\n" % (first_name, last_name)
+    info += "mail: %s\n" % email
+    info += "modifytimestamp: %s\n" % get_timestamp()
+    return info
 
 
 def get_data():
     "Return the informations entered"
-    last_name = raw_input("Last name : ")
     first_name = raw_input("First name : ")
+    last_name = raw_input("last name : ")
     email = raw_input("E-mail : ")
-    return [last_name, first_name, email]
+    return [first_name, last_name, email]
 
 
 def write_in_file():
     "Write in a file"
     of = open(filename, 'a')
     while 1:
-        last_name, first_name, email = get_data()
-        timestamp = get_timestamp()
-        if last_name == '':
+        first_name, last_name, email = get_data()
+        if first_name == '':
             break
         else:
-            of.write("dn: cn=%s %s,mail=%s\n" % (first_name, last_name, email))
-            of.write("objectclass: top\n")
-            of.write("objectclass: person\n")
-            of.write("objectclass: organizationalPerson\n")
-            of.write("objectclass: inetOrgPerson\n")
-            of.write("objectclass: mozillaAbPersonAlpha\n")
-            of.write("givenName:%s\n" % first_name)
-            of.write("sn:%s\n" % last_name)
-            of.write("cn:%s %s\n" % (first_name, last_name))
-            of.write("mail:%s\n" % email)
-            of.write("modifytimestamp: %s\n\n" % timestamp)
+            info = get_contact_ldif(first_name, last_name, email)
+            of.write(info)
     of.close()
 
 
