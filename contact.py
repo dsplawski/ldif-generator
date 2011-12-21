@@ -12,19 +12,20 @@ class Contact:
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-    
+
     def __repr__(self):
         "Show contact's informations"
-        return "%s %s <%s>" % (self.first_name, self.last_name, self.email)   
+        return "%s %s <%s>" % (self.first_name, self.last_name, self.email)
 
     def get_timestamp(self):
         "Return timestamp"
         timestamp = int(time.time())
         return "%d" % timestamp
-    
+
     def get_contact_ldif(self):
         "Return contact'si informations (format LDIF)"
-        info = "\ndn: cn=%s %s,mail=%s\n" % (self.first_name, self.last_name, self.email)
+        info = "\ndn: cn=%s %s,mail=%s\n"\
+        % (self.first_name, self.last_name, self.email)
         info += "objectclass: top\n"
         info += "objectclass: person\n"
         info += "objectclass: organizationalPerson\n"
