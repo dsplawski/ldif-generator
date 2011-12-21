@@ -66,13 +66,3 @@ class Contact:
                 break
             print line
         of.close()
-
-
-if __name__ == '__main__':
-    filename = raw_input('Enter filename to process: ')
-    option = raw_input('Type "a" to add contacts or "s" to show contact list:')
-    contact = Contact()
-    if option == 'a':
-        contact.write_in_file(filename)
-    else:
-        contact.read_in_file(filename)
