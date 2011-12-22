@@ -8,7 +8,7 @@ from contact import Contact
 from BaseMySQL import BaseMySQL, GestionBD, Sauvegarde
 
 
-if __name__ == '__main__':
+def main():
 # Création de l'objet-interface avec la base de données
     bd = GestionBD(BaseMySQL.dbName, BaseMySQL.user, 
                     BaseMySQL.passwd, BaseMySQL.host)
@@ -60,11 +60,13 @@ if __name__ == '__main__':
                 # analyser le résultat de la requête ci-dessus :
                 records = bd.resultatReq()      # ce sera un tuple de tuples
                 for rec in records:             # => chaque enregistrement
-                    for item in rec:
-                        print item,
-                    print
-                contact.write_in_file(fic)
+                    contact = Contact(*rec[1:])
+                    ofi.write(contact.get-contact_ldif())
+                ofi.close()
         else:
             bd.commit()
             bd.close()
             break
+
+if __name__ == '__main__':
+    main()
