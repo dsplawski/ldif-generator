@@ -9,8 +9,7 @@ from BaseMySQL import BaseMySQL, GestionBD, Sauvegarde
 
 
 def main():
-# Création de l'objet-interface avec la base de données
-    bd = GestionBD(BaseMySQL.dbName, BaseMySQL.user, 
+    bd = GestionBD(BaseMySQL.dbName, BaseMySQL.user,
                     BaseMySQL.passwd, BaseMySQL.host)
     if bd.echec:
         sys.exit()
@@ -25,43 +24,43 @@ def main():
           "7) Terminer ?                         Votre choix :",
         ch = int(raw_input())
         if ch == 1:
-            # création de toutes les tables décrites dans le dictionnaire
+            # Create all the tables described in the thesaurus
             bd.creerTables(BaseMySQL.dicoT)
         elif ch == 2:
-            # suppression de toutes les tables décrites dans le dic.
+            # Drop all the tables described in the thesaurus
             bd.supprimerTables(BaseMySQL.dicoT)
         elif ch == 3:
-        # création d'un <enregistreur> d'employés
+            # Integration of employees
             table = {3: 'employes'}[ch]
             enreg = Sauvegarde(bd, table)
             while 1:
                 if enreg.save():
                     break
         elif ch == 4:
-            # liste de tous les employés
+            # List of all employees
             table = {4: 'employes'}[ch]
             if bd.executerReq("SELECT * FROM %s" % table):
-                # analyser le résultat de la requête ci-dessus :
-                records = bd.resultatReq()      # ce sera un tuple de tuples
-                for rec in records:             # => chaque enregistrement
-                    for item in rec:            # => chaque champ dans l'enreg.
+                records = bd.resultatReq()
+                for rec in records:
+                    for item in rec:
                         print item,
                     print
         elif ch == 5:
-            req = raw_input("Entrez la requête SQL : ")
+            # Any query
+            req = raw_input("Enter SQL query : ")
             if bd.executerReq(req):
-                print bd.resultatReq()          # ce sera un tuple de tuples
+                print bd.resultatReq()
         elif ch == 6:
+            # Save
             fic = raw_input('Enter filename to process: ')
             ofi = open(fic, "w")
             contact = Contact()
             table = {6: 'employes'}[ch]
             if bd.executerReq("SELECT * FROM %s" % table):
-                # analyser le résultat de la requête ci-dessus :
-                records = bd.resultatReq()      # ce sera un tuple de tuples
-                for rec in records:             # => chaque enregistrement
+                records = bd.resultatReq()
+                for rec in records:
                     contact = Contact(*rec[1:])
-                    ofi.write(contact.get-contact_ldif())
+                    ofi.write(contact.get_contact_ldif())
                 ofi.close()
         else:
             bd.commit()
