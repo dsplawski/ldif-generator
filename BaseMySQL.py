@@ -7,13 +7,13 @@ import MySQLdb
 
 
 class BaseMySQL:
-    "Espace de noms pour les variables et fonctions <pseudo-globales>"
-    dbName = "david_db1"      # nom de la base de données
-    user = "david"              # propriétaire ou utilisateur
-    passwd = "david"            # mot de passe d'accès
-    host = "192.168.0.207"      # nom ou adresse IP du serveur
+    "Variables of BaseMySQL"
+    dbName = "david_db1"      # database
+    user = "david"              # user
+    passwd = "david"            # password
+    host = "192.168.0.207"      # IP server
 
-    # Structure de la base de données.  Dictionnaire des tables & champs :
+    # Thesaurus of tables & fields
     dicoT = {"employes": [('id_emp', "k", "clé primaire"),
                             ('nom', 25, "nom"),
                             ('prenom', 25, "prénom"),
@@ -21,34 +21,34 @@ class BaseMySQL:
 
 
 class GestionBD:
-    "Mise en place et interfaçage d'une base de données MySQL"
+    "Database's management"
     def __init__(self, dbName, user, passwd, host, port=3306):
-        "Établissement de la connexion - Création du curseur"
+        "Database's Connection"
         try:
             self.baseDonn = MySQLdb.connect(db=dbName,
             user=user, passwd=passwd, host=host, port=port)
         except Exception, err:
-            print 'La connexion avec la base de données a échoué :\n'\
-                    'Erreur détectée :\n%s' % err
+            print 'The database connection failed: :\n'\
+                    'Error detected :\n%s' % err
             self.echec = 1
         else:
-            self.cursor = self.baseDonn.cursor()   # création du curseur
+            self.cursor = self.baseDonn.cursor()
             self.echec = 0
 
     def creerTables(self, dicTables):
-        "Création des tables décrites dans le dictionnaire <dicTables>."
-        for table in dicTables:            # parcours des clés du dict.
+        "Create tables"
+        for table in dicTables:
             req = "CREATE TABLE %s (" % table
             pk = ''
             for descr in dicTables[table]:
-                nomChamp = descr[0]        # libellé du champ à créer
-                tch = descr[1]             # type de champ à créer
+                nomChamp = descr[0]
+                tch = descr[1]
                 if tch == 'i':
                     typeChamp = 'INTEGER'
                 elif tch == 'f':
                     typeChamp = 'FLOAT'
                 elif tch == 'k':
-                    # champ 'clé primaire' (incrémenté automatiquement)
+                    # field 'primary key'
                     typeChamp = 'INTEGER AUTO_INCREMENT'
                     pk = nomChamp
                 else:
@@ -61,31 +61,30 @@ class GestionBD:
             self.executerReq(req)
 
     def supprimerTables(self, dicTables):
-        "Suppression de toutes les tables décrites dans <dicTables>"
+        "Drop tables"
         for table in dicTables.keys():
             req = "DROP TABLE %s" % table
             self.executerReq(req)
-        self.commit()                       # transfert -> disque
+        self.commit()
 
     def executerReq(self, req):
-        "Exécution de la requête <req>, avec détection d'erreur éventuelle"
+        "Execute query"
         try:
             self.cursor.execute(req)
         except Exception, err:
-            # afficher la requête et le message d'erreur système :
-            print "Requête SQL incorrecte :\n%s\nErreur détectée :\n%s"\
+            print " incorrect SQL query :\n%s\nError detected :\n%s"\
                 % (req, err)
             return 0
         else:
             return 1
 
     def resultatReq(self):
-        "Renvoie le résultat de la requête précédente (un tuple de tuples)"
+        "Result of the query"
         return self.cursor.fetchall()
 
     def commit(self):
         if self.baseDonn:
-            self.baseDonn.commit()         # transfert curseur -> disque
+            self.baseDonn.commit()
 
     def close(self):
         if self.baseDonn:
@@ -93,33 +92,32 @@ class GestionBD:
 
 
 class Sauvegarde:
-    "Classe pour gérer l'entrée d'enregistrements divers"
+    "Backup"
     def __init__(self, bd, table):
         self.bd = bd
         self.table = table
-        self.descriptif = BaseMySQL.dicoT[table]   # descriptif des champs
+        self.descriptif = BaseMySQL.dicoT[table]
 
     def save(self):
-        "Procédure d'entrée d'un enregistrement entier"
-        champs = "("           # ébauche de chaîne pour les noms de champs
-        valeurs = "("          # ébauche de chaîne pour les valeurs
-        # Demander successivement une valeur pour chaque champ :
+        "Save"
+        champs = "("
+        valeurs = "("
         for cha, type, nom in self.descriptif:
-            if type == "k":    # on ne demandera pas le n° d'enregistrement
-                continue      # à l'utilisateur (numérotation auto.)
+            if type == "k":
+                continue
             champs = champs + cha + ","
-            val = raw_input("Entrez le champ %s :" % nom)
+            val = raw_input("Enter the field %s :" % nom)
             if type == "i" or type == 'f':
                 valeurs = valeurs + val + ","
             else:
                 valeurs = valeurs + "'%s'," % (val)
 
-        champs = champs[:-1] + ")"    # supprimer la dernière virgule
-        valeurs = valeurs[:-1] + ")"  # ajouter une parenthèse
+        champs = champs[:-1] + ")"
+        valeurs = valeurs[:-1] + ")"
         req = "INSERT INTO %s %s VALUES %s" % (self.table, champs, valeurs)
         self.bd.executerReq(req)
 
-        ch = raw_input("Continuer (O/N) ? ")
+        ch = raw_input("Continue (Y/N) ? ")
         if ch.upper() == "O":
             return 0
         else:
